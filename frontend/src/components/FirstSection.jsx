@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const FirstSection = () => {
   return (
@@ -19,9 +20,11 @@ const FirstSection = () => {
         <button className="hirebtn  cursor-pointer job bg-[#1E4633] w-50 text-white px-6 py-2 rounded-full hover:bg-[#20362c]">
           Find a job
         </button>
-        <button className="hirebtn cursor-pointer  worker bg-[#73248b] w-50 text-white px-6 py-2 rounded-full hover:bg-[#402947]">
-          Find a worker
-        </button>
+        <Link to="/workers">
+          <button className="hirebtn cursor-pointer  worker bg-[#73248b] w-50 text-white px-6 py-2 rounded-full hover:bg-[#402947]">
+            Find a worker
+          </button>
+        </Link>
       </div>
     </div>
   );

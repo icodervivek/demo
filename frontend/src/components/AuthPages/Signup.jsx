@@ -3,8 +3,10 @@ import Navbar from "../Navbar";
 import Footer from "../Footer";
 import axios from "axios";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +23,38 @@ const Signup = () => {
     setPassword(e.target.value);
   };
 
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/signup",
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success(response.data.message || "Signup Successful", {
+        position: "top-center",
+        autoClose: 2000,
+        transition: Bounce,
+      });
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup Faied", {
+        position: "top-center",
+        autoClose: 2000,
+        transition: Bounce,
+      });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -30,7 +64,7 @@ const Signup = () => {
           <h2 className="text-3xl font-bold mb-6 text-center text-[#fff]">
             Sign Up
           </h2>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSignup}>
             <input
               type="text"
               name="name"

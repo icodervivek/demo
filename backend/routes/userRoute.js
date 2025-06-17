@@ -1,10 +1,21 @@
 import express from "express";
+import fs from "fs";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
+import path from "path"
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import authenticateUser from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const filePath = path.join(__dirname, '..', 'user_profiles.json');
+
+
 
 router.get("/user", (req, res) => {
   console.log(`inside router`);
@@ -125,6 +136,13 @@ router.get("/profile", authenticateUser, (req, res) => {
   res.status(200).json({
     name,
     email,
+  });
+});
+
+router.get('/workers', authenticateUser, (req, res) => {
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) return res.status(500).json({ message: 'Error reading file' });
+    res.json(JSON.parse(data));
   });
 });
 
